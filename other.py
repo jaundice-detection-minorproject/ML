@@ -5,6 +5,7 @@ import os
 from PIL import Image
 from colorthief import ColorThief
 import matplotlib.pyplot as plt
+
 class ColorDetector(ColorThief):
     def __init__(self,image):
         self.image=image
@@ -31,17 +32,17 @@ for item in dirs:
         obj=ColorDetector(Image.fromarray(image))
         platter=obj.get_palette(color_count=3)
         arr=[]
+        r=0
+        if(item=="Positive"):r=1
         for val in platter:
-            arr.append(sum(val)/3)
+            arr.extend(val)
+        arr.append(r)
         data[item].append(arr)
 data["Positive"]=np.array(data['Positive'])
 data["Negative"]=np.array(data['Negative'])
+final_data=np.append(data["Positive"],data["Negative"],axis=0)
+np.random.shuffle(final_data)
+data=pd.DataFrame(final_data)
+data.to_csv("dataset.csv",index=False)
 
-positive_avg=np.average(data["Positive"],axis=0)
-negative_avg=np.average(data["Negative"],axis=0)
-print(positive_avg)
-print(negative_avg)
-print(positive_avg.shape)
-plt.scatter(positive_avg,[1]*positive_avg.shape[0],edgecolors="red")
-plt.scatter(negative_avg,[0]*negative_avg.shape[0],edgecolors="green")
-plt.show()
+
