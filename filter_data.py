@@ -33,13 +33,8 @@ def save(img,name):
 target_path="../Dataset/PreProcess Dataset/Positive"
 source_path="../Dataset/Unprocess"
 dirs=os.listdir(source_path)
-# for item in dirs:
-#     if(item!="Positive" and item!="Negative"):continue
 for val in dirs:
-        # print(item,val)
-        img=cv.imread(os.path.join(source_path,val))
-        img=cv.resize(img,(250,250))
-        img=detect(img,eye,val)
-        # cv.imshow("Image",img)
-        # cv.waitKey(0)
-    # cv.destroyAllWindows()
+    img=cv.imread(os.path.join(source_path,val))
+    img=cv.resize(img,(250,250))
+    img=detect(img,eye,val)
+
