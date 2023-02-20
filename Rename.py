@@ -9,7 +9,7 @@ def call(item):
         os.rename(os.path.join(path,dirs[i]),os.path.join(path,f"source_raw{i+1}.jpg"))
 
 
-def check(item):
+def check(item,tag):
     path=f"../Dataset/Raw Dataset/{item}"
     dirs=os.listdir(path)
     x=0
@@ -17,11 +17,13 @@ def check(item):
     for item in dirs:
         target=imageUpload(os.path.join(path,item))
         t=findJaundice(target)
-        if(t==0):
+        if(t==tag):
             x+=1
+        elif(1-t==tag):
+            print(1-t)
         elif(t==-1):
             total-=1
-    print(total-x,total,(total-x)/total,x/total)  
+    print(x,total,total-x)  
 # call("Positive")
 # call("Negative")
-# check("Positive")
+check("Positive",1)

@@ -34,7 +34,7 @@ def findJaundice(target):
     not_have_prob=0
     have_prob=0
     for item in target:
-        color=getMostDominantColor(item)
+        color,_=getMostDominantColor(item)
         color=np.array(color)
         color=np.reshape(color,(1,-1))
         y=model.predict_proba(color)

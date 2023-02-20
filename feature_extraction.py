@@ -20,14 +20,15 @@ def getMostDominantColor(image):
     segmented_data = centers[labels.flatten()]
     segmented_image = segmented_data.reshape((image.shape))
     image=segmented_image
-    # hsv=cv.cvtColor(cv.cvtColor(image,cv.COLOR_BGR2RGB),cv.COLOR_RGB2HSV)
-    # hsv=cv.cvtColor(hsv,cv.COLOR_BGR2RGB)
-    obj=ColorDetector(Image.fromarray(image))
-    platter=obj.get_palette(color_count=5)
-    arr=[]
-    for val in platter:
-        arr.extend(val)
-    return arr
+    hsv=cv.cvtColor(cv.cvtColor(image,cv.COLOR_BGR2RGB),cv.COLOR_RGB2HSV)
+    hsv=cv.cvtColor(hsv,cv.COLOR_BGR2RGB)
+    # obj=ColorDetector(Image.fromarray(image))
+    # platter=obj.get_palette(color_count=5)
+    # arr=[]
+    # for val in platter:
+    #     arr.extend(val)
+    # return arr
+    return hsv.flatten().tolist(),hsv
 def feature_extraction():
     target_path="../Dataset/PreProcess Dataset"
     data={"Positive":[],"Negative":[]}
@@ -37,7 +38,7 @@ def feature_extraction():
         print(item)
         for val in os.listdir(os.path.join(target_path,item)):
             image=cv.imread(os.path.join(target_path,item,val))
-            arr=getMostDominantColor(image)
+            arr,_=getMostDominantColor(image)
             r=0
             if(item=="Positive"):r=1
             arr.append(r)
@@ -46,7 +47,6 @@ def feature_extraction():
     data["Positive"]=np.array(data['Positive'])
     data["Negative"]=np.array(data['Negative'])
     final_data=np.append(data["Positive"],data["Negative"],axis=0)
-    # np.random.shuffle(final_data)
     data=pd.DataFrame(final_data)
     data.to_csv("dataset.csv",index=False)
 if __name__=="__main__":
