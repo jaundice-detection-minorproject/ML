@@ -2,16 +2,11 @@ import cv2 as cv
 import requests
 import os
 from PIL import Image
-eye_url="https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml"
-face_url="https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_alt_tree.xml"
+
 def loadFile(url,filename):
     res=requests.get(url)
     with open(filename,"wb") as f:
         f.write(res.text.encode())
-# loadFile(eye_url,"eye.xml")
-# loadFile(face_url,"face.xml")
-eye=cv.CascadeClassifier("./eye.xml")
-face=cv.CascadeClassifier("./face.xml")
 
 def detect(img,eye:cv.CascadeClassifier,name):
     img1=img.copy()
@@ -25,16 +20,20 @@ def detect(img,eye:cv.CascadeClassifier,name):
         imr=cv.rectangle(imr,(x,y),(x+w,y+l),(255,0,255))
         r+=1
     return imr
+
 def save(img,name):
     r=Image.fromarray(cv.cvtColor(img,cv.COLOR_BGR2RGB))
     r.save(os.path.join(target_path,name))
-
-
-target_path="../Dataset/PreProcess Dataset/Positive"
-source_path="../Dataset/Unprocess"
-dirs=os.listdir(source_path)
-for val in dirs:
-    img=cv.imread(os.path.join(source_path,val))
-    img=cv.resize(img,(250,250))
-    img=detect(img,eye,val)
+    
+if __name__=="__main__":
+    # eye_url="https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml"
+    # loadFile(eye_url,"eye.xml")
+    eye=cv.CascadeClassifier("./eye.xml")
+    target_path="../Dataset/Dataset/Positive"
+    source_path="../Dataset/Unprocess"
+    dirs=os.listdir(source_path)
+    for val in dirs:
+        img=cv.imread(os.path.join(source_path,val))
+        img=cv.resize(img,(250,250))
+        img=detect(img,eye,val)
 

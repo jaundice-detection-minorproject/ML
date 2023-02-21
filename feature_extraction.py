@@ -1,14 +1,8 @@
 import cv2 as cv
 import numpy as np
-import pandas as pd
 import os
-from PIL import Image
-from colorthief import ColorThief
-import matplotlib.pyplot as plt
+import pickle
 
-class ColorDetector(ColorThief):
-    def __init__(self,image):
-        self.image=image
 def getMostDominantColor(image):
     image=cv.resize(image,(50,50))
     image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
@@ -21,18 +15,14 @@ def getMostDominantColor(image):
     segmented_image = segmented_data.reshape((image.shape))
     image=segmented_image
     hsv=cv.cvtColor(cv.cvtColor(image,cv.COLOR_BGR2RGB),cv.COLOR_RGB2HSV)
-    hsv=cv.cvtColor(hsv,cv.COLOR_BGR2RGB)
-    # obj=ColorDetector(Image.fromarray(image))
-    # platter=obj.get_palette(color_count=5)
-    # arr=[]
-    # for val in platter:
-    #     arr.extend(val)
-    # return arr
+    hsv=cv.cvtColor(hsv,cv.COLOR_BGR2RGB)/255
     return hsv.flatten().tolist(),hsv
+    
 def feature_extraction():
     target_path="../Dataset/PreProcess Dataset"
     data={"Positive":[],"Negative":[]}
     dirs=os.listdir(target_path)
+    labels=[]
     for item in dirs:
         if(item!="Positive" and item!="Negative"):continue
         print(item)
@@ -47,8 +37,9 @@ def feature_extraction():
     data["Positive"]=np.array(data['Positive'])
     data["Negative"]=np.array(data['Negative'])
     final_data=np.append(data["Positive"],data["Negative"],axis=0)
-    data=pd.DataFrame(final_data)
-    data.to_csv("dataset.csv",index=False)
+    pickle.dump(final_data,open("dataset.pkl","wb"))
+    # data=pd.DataFrame(final_data)
+    # data.to_csv("dataset.csv",index=False)
 if __name__=="__main__":
     feature_extraction()
 

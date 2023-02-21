@@ -16,14 +16,11 @@ def check(item,tag):
     total=len(dirs)
     for item in dirs:
         target=imageUpload(os.path.join(path,item))
-        t=findJaundice(target)
+        t,_=findJaundice(target)
         if(t==tag):
             x+=1
-        elif(1-t==tag):
-            print(1-t)
         elif(t==-1):
             total-=1
     print(x,total,total-x)  
-# call("Positive")
-# call("Negative")
-check("Positive",1)
+
+check("Negative",0)

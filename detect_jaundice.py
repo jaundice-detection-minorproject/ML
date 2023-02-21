@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 from feature_extraction import getMostDominantColor
 import keyboard
-import matplotlib.pyplot as plt
 
 eye=cv.CascadeClassifier("./eye.xml")
 model=pickle.load(open("model.pkl","rb"))
@@ -44,14 +43,11 @@ def findJaundice(target):
         not_have_prob/=len(target)
         have_prob/=len(target)
         if(not_have_prob>=have_prob):
-            print("You Don't Have Jaundice with Accuracy : %.2f%%"%(not_have_prob*100))
-            return 0
+            return 0,(not_have_prob)
         else:
-            print("You Have Jaundice with Accuracy : %.2f%%"%(have_prob*100))
-            return 1
+            return 1,have_prob
     else:
-        print("Eye Not Found")
-        return -1
+        return -1,-1
 
 def imageUpload(path):
     img=cv.imread(path)
@@ -65,9 +61,16 @@ if __name__=="__main__":
         elif(use==2):
             img_path=input("Enter Image Path : ")
             target=imageUpload(img_path)
+            
         else:
             print("Invalid Key Enter")
             continue
-        findJaundice(target)
+        output,probability=findJaundice(target)
+        if(output==0):
+            print("You Don't Have Jaundice with Accuracy %.2f%%"%(probability*100))
+        elif(output==1):
+            print("You Have Jaundice with Accuracy %.2f%%"%(probability*100))
+        else:
+            print("Image Not Found")
         break
         
