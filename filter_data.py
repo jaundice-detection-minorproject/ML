@@ -29,8 +29,8 @@ if __name__=="__main__":
     # eye_url="https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml"
     # loadFile(eye_url,"eye.xml")
     eye=cv.CascadeClassifier("./eye.xml")
-    target_path="../Dataset/Dataset/Positive"
-    source_path="../Dataset/Unprocess"
+    target_path="../Dataset/PreProcess Dataset/Positive"
+    source_path="../Dataset/pr2"
     dirs=os.listdir(source_path)
     for val in dirs:
         img=cv.imread(os.path.join(source_path,val))

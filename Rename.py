@@ -8,7 +8,6 @@ def call(item):
     for i in range(len(dirs)):
         os.rename(os.path.join(path,dirs[i]),os.path.join(path,f"source_raw{i+1}.jpg"))
 
-
 def check(item,tag):
     path=f"../Dataset/Raw Dataset/{item}"
     dirs=os.listdir(path)
@@ -23,4 +22,4 @@ def check(item,tag):
             total-=1
     print(x,total,total-x)  
 
-check("Negative",0)
+check("Positive",1)

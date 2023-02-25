@@ -71,6 +71,6 @@ if __name__=="__main__":
         elif(output==1):
             print("You Have Jaundice with Accuracy %.2f%%"%(probability*100))
         else:
-            print("Image Not Found")
+            print("Eye Not Found")
         break
         
