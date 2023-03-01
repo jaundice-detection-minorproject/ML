@@ -54,23 +54,26 @@ def imageUpload(path):
     img,target=detect(img,eye)
     return target
 if __name__=="__main__":
-    while(True):
-        use=int(input("Enter Type 1) Video Camera 2) Upload Image: "))
-        if(use==1):
-            target=loadCamera()
-        elif(use==2):
-            img_path=input("Enter Image Path : ")
-            target=imageUpload(img_path)
-            
-        else:
-            print("Invalid Key Enter")
-            continue
-        output,probability=findJaundice(target)
-        if(output==0):
-            print("You Don't Have Jaundice with Accuracy %.2f%%"%(probability*100))
-        elif(output==1):
-            print("You Have Jaundice with Accuracy %.2f%%"%(probability*100))
-        else:
-            print("Eye Not Found")
-        break
+    try:
+        while(True):
+            use=int(input("Enter Type 1) Video Camera 2) Upload Image: "))
+            if(use==1):
+                target=loadCamera()
+            elif(use==2):
+                img_path=input("Enter Image Path : ")
+                target=imageUpload(img_path)
+
+            else:
+                print("Invalid Key Enter")
+                continue
+            output,probability=findJaundice(target)
+            if(output==0):
+                print("You Don't Have Jaundice with Accuracy %.2f%%"%(probability*100))
+            elif(output==1):
+                print("You Have Jaundice with Accuracy %.2f%%"%(probability*100))
+            else:
+                print("Eye Not Found")
+            break
+    except:
+        print("Image Not Found")
         
