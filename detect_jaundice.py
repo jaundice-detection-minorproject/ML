@@ -6,6 +6,7 @@ import keyboard
 
 eye=cv.CascadeClassifier("./eye.xml")
 model=pickle.load(open("model.pkl","rb"))
+# model=pickle.load(open("D:/ML Project/cnn test/cnn_model.pkl","rb"))
 
 def detect(img,eye:cv.CascadeClassifier):
     img1=img.copy()
@@ -36,7 +37,9 @@ def findJaundice(target):
         color,_=getMostDominantColor(item)
         color=np.array(color)
         color=np.reshape(color,(1,-1))
+        # color=np.reshape(color,(1,50,50,3))
         y=model.predict_proba(color)
+        # y=model.predict(color)
         not_have_prob+=y[0][0]
         have_prob+=y[0][1]
     if(len(target)!=0):
@@ -49,10 +52,12 @@ def findJaundice(target):
     else:
         return -1,-1
 
-def imageUpload(path):
+def imageUpload(path,isload=True):
     img=cv.imread(path)
-    img,target=detect(img,eye)
-    return target
+    if(isload):
+        img,target=detect(img,eye)
+    else:
+        return [img]
 if __name__=="__main__":
     try:
         while(True):
