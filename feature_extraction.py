@@ -2,7 +2,6 @@ import cv2 as cv
 import numpy as np
 import os
 import pickle
-import random
 def getMostDominantColor(image):
     image=cv.resize(image,(50,50))
     image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
@@ -17,14 +16,11 @@ def getMostDominantColor(image):
     hsv=cv.cvtColor(cv.cvtColor(image,cv.COLOR_BGR2RGB),cv.COLOR_RGB2HSV)
     hsv=cv.cvtColor(hsv,cv.COLOR_BGR2RGB)/255
     return hsv.flatten().tolist(),hsv
-    # return image.flatten().tolist(),image
     
 def feature_extraction():
     target_path="../Dataset/PreProcess Dataset"
     data={"Positive":[],"Negative":[]}
     dirs=os.listdir(target_path)
-    labels=[]
-    cnn_data=[]
     for item in dirs:
         if(item!="Positive" and item!="Negative"):continue
         print(item)
@@ -34,18 +30,12 @@ def feature_extraction():
             r=0
             if(item=="Positive"):r=1
             arr.append(r)
-            cnn_data.append([_,r])
             data[item].append(arr)
-
     data["Positive"]=np.array(data['Positive'])
     data["Negative"]=np.array(data['Negative'])
     final_data=np.append(data["Positive"],data["Negative"],axis=0)
-    # np.random.shuffle(final_data)
-    random.shuffle(cnn_data)
     pickle.dump(final_data,open("dataset.pkl","wb"))
-    pickle.dump(cnn_data,open("data.pkl","wb"))
-    # data=pd.DataFrame(final_data)
-    # data.to_csv("dataset.csv",index=False)
+    pickle.dump(final_data,open("data.pkl","wb"))
 if __name__=="__main__":
     feature_extraction()
 

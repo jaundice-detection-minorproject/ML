@@ -9,12 +9,12 @@ def call(item):
         os.rename(os.path.join(path,dirs[i]),os.path.join(path,f"source_raw{i+1}.jpg"))
 
 def check(item,tag):
-    path=f"../Dataset/PreProcess Dataset/{item}"
+    path=f"../Dataset/Raw Dataset/{item}"
     dirs=os.listdir(path)
-    x=0
+    x=0 
     total=len(dirs)
     for item in dirs:
-        target=imageUpload(os.path.join(path,item),False)
+        target=imageUpload(os.path.join(path,item))
         t,_=findJaundice(target)
         if(t==tag):
             x+=1

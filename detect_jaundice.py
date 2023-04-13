@@ -4,11 +4,11 @@ import numpy as np
 from feature_extraction import getMostDominantColor
 import keyboard
 
-eye=cv.CascadeClassifier("./eye.xml")
-model=pickle.load(open("model.pkl","rb"))
+eye=cv.CascadeClassifier(f"./eye.xml")
+model=pickle.load(open(f"./model.pkl","rb"))
 # model=pickle.load(open("D:/ML Project/cnn test/cnn_model.pkl","rb"))
 
-def detect(img,eye:cv.CascadeClassifier):
+def detect(img,eye:cv.CascadeClassifier=eye):
     img1=img.copy()
     face_rect=eye.detectMultiScale(img1,scaleFactor = 1.2,minNeighbors = 5)
     target=[]
@@ -52,10 +52,11 @@ def findJaundice(target):
     else:
         return -1,-1
 
-def imageUpload(path,isload=True):
+def imageUpload(path,isload=True,):
     img=cv.imread(path)
     if(isload):
         img,target=detect(img,eye)
+        return target
     else:
         return [img]
 if __name__=="__main__":
